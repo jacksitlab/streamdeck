@@ -50,6 +50,6 @@ source env/bin/activate
 ## test connection
 
 ```
-python3 src/example_deckinfo.py
+python3 test/testdeck.py
 ```
 
