@@ -4,11 +4,13 @@ from StreamDeck.DeviceManager import DeviceManager
 import time
 from threading import Timer
 from lib.perpetualTimer import PerpetualTimer
+from lib.config import StreamDeckConfig
 
 class StreamDeckServer:
 
     def __init__(self, deck, configFilename):
         self.deck = deck
+        self.config = StreamDeckConfig(configFilename)
         self.deck.set_key_callback(self.onKeyChanged)
         self.timer = PerpetualTimer(1, self.onTimerTick)
 
@@ -42,7 +44,7 @@ if __name__ == "__main__":
 
     print("Found {} Stream Deck(s).\n".format(len(streamdecks)))
 
-    server = StreamDeckServer(streamdecks[0], 'config/config.json')
+    server = StreamDeckServer(streamdecks[0], 'src/config/config.json')
 
     server.start()
     server.wait()

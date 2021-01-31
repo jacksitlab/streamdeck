@@ -1,28 +1,32 @@
 {
+    "remote":{
+        "denon":"http://10.20.0.221",
+        "foobar":"http://10.20.0.180:8080"
+    },
     "items": {
         "1": {
             "type": "button",
             "image": "",
             "imagePressed": "",
-            "exec": "internal:profile.nintendoSwitch()"
+            "exec": ["internal:profile.nintendoSwitch()"]
         },
         "5": {
             "type": "button",
             "image": "",
             "imagePressed": "",
-            "exec": "internal:denon.incVolume(10)"
+            "exec": ["internal:denon.incVolume(10)"]
         },
         "10": {
             "type": "display",
             "refreshRate": 1000,
-            "exec": "internal:denon.getVolume()"
+            "exec": ["internal:denon.getVolume()"]
         },
         "15": {
             "type": "button",
             "image": "",
             "imagePressed": "",
             
-            "exec": "internal:denon.decVolume(10)"
+            "exec": ["internal:denon.decVolume(10)"]
         }
     }
 }
