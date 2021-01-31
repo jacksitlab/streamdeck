@@ -4,3 +4,4 @@ example_basic.py
 example_deckinfo.py
 assets/
 __pycache__
+.vscode

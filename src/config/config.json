@@ -1,0 +1,28 @@
+{
+    "items": {
+        "1": {
+            "type": "button",
+            "image": "",
+            "imagePressed": "",
+            "exec": "internal:profile.nintendoSwitch()"
+        },
+        "5": {
+            "type": "button",
+            "image": "",
+            "imagePressed": "",
+            "exec": "internal:denon.incVolume(10)"
+        },
+        "10": {
+            "type": "display",
+            "refreshRate": 1000,
+            "exec": "internal:denon.getVolume()"
+        },
+        "15": {
+            "type": "button",
+            "image": "",
+            "imagePressed": "",
+            
+            "exec": "internal:denon.decVolume(10)"
+        }
+    }
+}
