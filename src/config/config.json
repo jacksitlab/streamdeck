@@ -1,12 +1,27 @@
 {
     "remote":{
-        "denon":"http://10.20.0.221",
-        "foobar":"http://10.20.0.180:8080"
+        "denon":{
+            "host":"http://10.20.0.221"
+        },
+        "foobar":{
+            "host":"http://10.20.0.180:8889"
+        },
+        "kodi":{
+            "host":"ttp://10.20.0.220:8080",
+            "username":"kodi",
+            "password":"kodi"
+        }
     },
     "items": {
         "1": {
             "type": "button",
-            "image": "",
+            "image": "src/assets/switch.svg",
+            "imagePressed": "",
+            "exec": ["internal:profile.nintendoSwitch()"]
+        },
+        "2": {
+            "type": "button",
+            "image": "src/assets/foobar2000.svg",
             "imagePressed": "",
             "exec": ["internal:profile.nintendoSwitch()"]
         },
