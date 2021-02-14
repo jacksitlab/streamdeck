@@ -7,6 +7,7 @@ class StreamDeckConfig:
         file = open(configFilename, 'r')
         o = json.load(file)
         file.close()
+        self.defaultMargin = int(getOrDefault(o,"defaultMargin","0"))
         self.remote = dict()
         tmp = getOrDefault(o["remote"], "foobar")
         self.remote["foobar"] = FoobarConfig(tmp) if not tmp is None else None
@@ -52,7 +53,7 @@ class ItemConfig:
         self.type = obj["type"]
         self.image = getOrDefault(obj, "image")
         self.imagePressed = getOrDefault(obj, "imagePressed")
-        self.executions = getOrDefault(obj, "exec")
+        self.executions = getOrDefault(obj, "exec",())
         tmp = getOrDefault(obj, "refreshRate")
         self.refreshRate = int(tmp) if not tmp is None else None
 

@@ -1,10 +1,17 @@
 #!/usr/bin/env python3
 
-from StreamDeck.DeviceManager import DeviceManager
+import os
 import time
+import re
+import cairosvg
+import io
 from threading import Timer
+from PIL import Image, ImageDraw, ImageFont
+from StreamDeck.DeviceManager import DeviceManager
+from StreamDeck.ImageHelpers import PILHelper
 from lib.perpetualTimer import PerpetualTimer
 from lib.config import StreamDeckConfig
+from lib.imageCache import ImageCache
 
 class StreamDeckServer:
 
@@ -12,13 +19,17 @@ class StreamDeckServer:
         self.deck = deck
         self.config = StreamDeckConfig(configFilename)
         self.deck.set_key_callback(self.onKeyChanged)
-        self.timer = PerpetualTimer(1, self.onTimerTick)
+        self.timer = None
+        #self.timer = PerpetualTimer(1, self.onTimerTick)
+        self.imageCache = ImageCache('.cache', True)
 
     def start(self):
         print("starting")
         self.deck.open()
         self.deck.reset()
-        self.timer.start()
+        self.initKeys()
+        if self.timer:
+            self.timer.start()
 
     def reset(self):
         self.deck.reset()
@@ -26,17 +37,89 @@ class StreamDeckServer:
     def stop(self):
         print("stopping")
         self.deck.close()
-        self.timer.cancel()
+        if self.timer:
+            self.timer.cancel()
 
     def wait(self):
         while True:
             time.sleep(1)
 
+    def initKeys(self):
+        for key in range(self.deck.key_count()):
+            self.updateKeyImage(key, False)
+
+    def updateKeyImage(self, key, state):
+        # Determine what icon and label to use on the generated key.
+        #key_style = get_key_style(deck, key, state)
+
+        # Generate the custom key with the requested image and label.
+        image = self.renderKeyImage(self.config.getItemConfig(key))
+
+        # Use a scoped-with on the deck to ensure we're the only thread using it
+        # right now.
+        with self.deck:
+        # Update requested key with the generated image.
+            self.deck.set_key_image(key, image)
+
+    def renderKeyImage(self, config):
+        # Resize the source image asset to best-fit the dimensions of a single key,
+        # leaving a margin at the bottom so that we can draw the key title
+        # afterwards.
+        if (config is None) or (config.image is None) or (len(config.image)==0):
+            icon = Image.new('RGB', (72, 72))
+        else:
+            print("render image "+config.image)
+            try:
+                icon = self.imageCache.get(config.image)
+            except Exception as e:
+                print("problem loading image from cache "+config.image+":"+e)
+                icon = Image.new('RGB', (72, 72))
+        margin = self.config.defaultMargin
+        image = PILHelper.create_scaled_image(self.deck, icon, margins=[margin, margin, margin, margin])
+
+        # Load a custom TrueType font and use it to overlay the key index, draw key
+        # label onto the image a few pixels from the bottom of the key.
+        #draw = ImageDraw.Draw(image)
+        #font = ImageFont.truetype(font_filename, 14)
+        #draw.text((image.width / 2, image.height - 5), text=label_text, font=font, anchor="ms", fill="white")
+
+        return PILHelper.to_native_format(self.deck, image)
+
     def onKeyChanged(self, deck, key, state):
         print("Deck {} Key {} = {}".format(deck.id(), key, state), flush=True)
+        if not state:
+            return
+        keyConfig = self.config.getItemConfig(key)
+        if not keyConfig is None:
+            if len(keyConfig.executions) > 0:
+                self.resolveExecutions(keyConfig.executions)
+            else:
+                print("nothing to exec")
 
     def onTimerTick(self):
         print("on timer tick")
+
+    def resolveExecutions(self, execs):
+        for execution in execs:
+            self.resolveExecution(execution)
+
+    def resolveExecution(self, execution):
+        print("try to resolve execution: "+ str(execution))
+        regex = r"^(internal|external):(.*)$"
+        match = re.match(regex, execution)
+        if (not match is None) and (len(match.groups()) == 2):
+            if match.groups()[0] == "internal":
+                self.resolveExecutionInternal(match.groups()[1])
+            else:
+                self.resolveExecutionExternal(match.groups()[1])
+
+    def resolveExecutionInternal(self, execution):
+        print("execute internal command "+ execution)
+        pass
+
+    def resolveExecutionExternal(self, execution):
+        print("execute external command "+ execution)
+        pass
 
 
 if __name__ == "__main__":
@@ -44,7 +127,7 @@ if __name__ == "__main__":
 
     print("Found {} Stream Deck(s).\n".format(len(streamdecks)))
 
-    server = StreamDeckServer(streamdecks[0], 'src/config/config.json')
+    server = StreamDeckServer(streamdecks[0], 'config/config.json')
 
     server.start()
     server.wait()

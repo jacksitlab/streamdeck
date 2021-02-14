@@ -1,4 +1,7 @@
 {
+    "settings":{
+        "defaultMargin":6
+    },
     "remote":{
         "denon":{
             "host":"http://10.20.0.221"
@@ -13,17 +16,23 @@
         }
     },
     "items": {
-        "1": {
+        "0": {
             "type": "button",
-            "image": "src/assets/switch.svg",
+            "image": "https://worldvectorlogo.com/download/nintendo-switch.svg",
             "imagePressed": "",
             "exec": ["internal:profile.nintendoSwitch()"]
         },
+        "1": {
+            "type": "button",
+            "image": "https://upload.wikimedia.org/wikipedia/commons/4/4c/Antu_kodi.svg",
+            "imagePressed": "",
+            "exec": ["internal:profile.kodi()"]
+        },
         "2": {
             "type": "button",
-            "image": "src/assets/foobar2000.svg",
+            "image": "https://upload.wikimedia.org/wikipedia/de/7/7c/Foobar2000_Icon.svg",
             "imagePressed": "",
-            "exec": ["internal:profile.nintendoSwitch()"]
+            "exec": ["internal:profile.foobar2000()"]
         },
         "5": {
             "type": "button",

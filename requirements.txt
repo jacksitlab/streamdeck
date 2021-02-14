@@ -3,3 +3,4 @@ streamdeck
 urllib3
 svglib
 websocket-client
+cairosvg
