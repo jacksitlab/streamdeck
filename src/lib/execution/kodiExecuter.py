@@ -1,10 +1,9 @@
-
 from ..kodiClient import KodiClient
+from .baseExecutor import BaseExecuter
 
-class KodiExecuter:
+class KodiExecuter(BaseExecuter):
 
     def __init__(self, client):
+        super().__init__()
         self.client = client
     
-    def execute(self, command):
-        print("execute kodi command "+command)

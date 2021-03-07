@@ -1,10 +1,9 @@
-
 from ..foobarClient import FoobarClient
+from .baseExecutor import BaseExecuter
 
-class FoobarExecuter:
+class FoobarExecuter(BaseExecuter):
 
     def __init__(self, client):
+        super().__init__()
         self.client = client
     
-    def execute(self, command):
-        print("execute foobar command "+command)

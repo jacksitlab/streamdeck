@@ -1,23 +1,15 @@
 import re
 from ..denonClient import DenonClient
+from .baseExecutor import BaseExecuter
 
-class DenonExecuter:
+class DenonExecuter(BaseExecuter):
 
     def __init__(self, client):
+        super().__init__()
         self.client = client
+
+    def setVolume(self, dBValue):
+        print("set volume to "+str(dBValue))
     
-    def execute(self, command):
-        regex = r"^([^\(]+)\(([^\)]*)\)$"
-        match = re.findall(regex, command, re.M|re.I)
-        if len(match)>0:
-            cmd = match[0][0]
-            args = match[0][1] if len(match[0])>1 else ""
-
-            return self.resolveExecution(cmd, args)
-
-        
-        raise Exception("unable to resolve "+command)
-
-    def resolveExecution(self, cmd, args):
-        print("execute denon command "+cmd +" with args "+str(args))
-        return None
+    def setSource(self, src):
+        print("set source to "+src)
