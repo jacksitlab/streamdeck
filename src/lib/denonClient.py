@@ -6,8 +6,8 @@ from .denon.status import DenonStatus
 
 class DenonClient(BaseHttpClient):
 
-    def __init__(self, host):
-        super().__init__(host)
+    def __init__(self, url):
+        super().__init__(url)
 
     def volumeUp(self, inc=1):
         while inc > 0:

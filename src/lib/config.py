@@ -10,12 +10,16 @@ class StreamDeckConfig:
         self.defaultMargin = int(getOrDefault(o,"defaultMargin","0"))
         self.remote = dict()
         tmp = getOrDefault(o["remote"], "foobar")
-        self.remote["foobar"] = FoobarConfig(tmp) if not tmp is None else None
+        if tmp:
+            self.remote["foobar"] = FoobarConfig(tmp)
         tmp = getOrDefault(o["remote"], "denon")
-        self.remote["denon"] = DenonConfig(tmp) if not tmp is None else None
+        if tmp:
+            self.remote["denon"] = DenonConfig(tmp)
         tmp = getOrDefault(o["remote"], "kodi")
-        self.remote["kodi"] = KodiConfig(tmp) if not tmp is None else None
+        if tmp:
+            self.remote["kodi"] = KodiConfig(tmp)
         self.items = self.loadItems(o["items"])
+        self.profiles = getOrDefault(o,"profiles",dict())
 
     def loadItems(self, itemsMap):
         m = dict()
@@ -23,6 +27,12 @@ class StreamDeckConfig:
         for key in keys:
             m[key] = ItemConfig(itemsMap[key])
         return m
+
+    def getRemoteConfigs(self):
+        return self.remote
+
+    def getProfileConfigs(self):
+        return self.profiles
 
     def getItemConfig(self, key):
         if str(key) in self.items:
@@ -32,20 +42,27 @@ class StreamDeckConfig:
 
 class DenonConfig:
     def __init__(self, obj):
-        self.host = obj["host"]
+        self.url = obj["url"]
+        self.type = obj["type"]
 
 
 class FoobarConfig:
     def __init__(self, obj):
-        self.host = obj["host"]
+        self.url = obj["url"]
+        self.type = obj["type"]
 
 
 class KodiConfig:
     def __init__(self, obj):
-        self.host = obj["host"]
+        self.url = obj["url"]
+        self.type = obj["type"]
         self.username = obj["username"]
         self.password = obj["password"]
 
+class TVConfig:
+    def __init__(self, obj):
+        self.host = obj["host"]
+        self.type = obj["type"]
 
 class ItemConfig:
 

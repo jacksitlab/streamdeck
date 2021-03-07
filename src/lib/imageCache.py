@@ -43,8 +43,7 @@ class ImageCache:
             match = re.findall(regex, url, re.M|re.I)
             if len(match)>0:
                 dstFilename = match[0]
-            else:
-                print("no match")
+
         if dstFilename is None:
             raise Exception("unable to detect dst filename out of url")
         dstPath=self.baseFolder+"/"+dstFilename

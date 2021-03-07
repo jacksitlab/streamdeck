@@ -1,56 +1,88 @@
 {
-    "settings":{
-        "defaultMargin":6
+    "settings": {
+        "defaultMargin": 6
     },
-    "remote":{
-        "denon":{
-            "host":"http://10.20.0.221"
+    "remote": {
+        "denon": {
+            "type": "DENON",
+            "url": "http://10.20.0.221"
         },
-        "foobar":{
-            "host":"http://10.20.0.180:8889"
+        "foobar": {
+            "type": "FOOBAR",
+            "url": "http://10.20.0.180:8889"
         },
-        "kodi":{
-            "host":"ttp://10.20.0.220:8080",
-            "username":"kodi",
-            "password":"kodi"
+        "kodi": {
+            "type": "KODI",
+            "url": "http://10.20.0.220:8080",
+            "username": "kodi",
+            "password": "kodi"
+        },
+        "tv": {
+            "type": "SAMSUNG_SMARTTV",
+            "host": "10.20.0.222"
         }
+    },
+    "profiles": {
+        "nintendoSwitch": [
+            "denon.setVolume(30)",
+            "denon.setSource(GAME)"
+        ]
     },
     "items": {
         "0": {
             "type": "button",
             "image": "https://worldvectorlogo.com/download/nintendo-switch.svg",
             "imagePressed": "",
-            "exec": ["internal:profile.nintendoSwitch()"]
+            "exec": [
+                "profile.nintendoSwitch()"
+            ]
         },
         "1": {
             "type": "button",
             "image": "https://upload.wikimedia.org/wikipedia/commons/4/4c/Antu_kodi.svg",
             "imagePressed": "",
-            "exec": ["internal:profile.kodi()"]
+            "exec": [
+                "profile.kodi()"
+            ]
         },
         "2": {
             "type": "button",
             "image": "https://upload.wikimedia.org/wikipedia/de/7/7c/Foobar2000_Icon.svg",
             "imagePressed": "",
-            "exec": ["internal:profile.foobar2000()"]
+            "exec": [
+                "profile.foobar2000()"
+            ]
+        },
+        "3": {
+            "type": "button",
+            "image": "https://www.creative-aktuell.de/files/mev4creative/layout/serviceletter/cc/bilder/160316-PS/Sky-Logo.jpg",
+            "imagePressed": "",
+            "exec": [
+                "profile.sky()"
+            ]
         },
         "5": {
             "type": "button",
             "image": "",
             "imagePressed": "",
-            "exec": ["internal:denon.incVolume(10)"]
+            "exec": [
+                "denon.incVolume(10)"
+            ]
         },
         "10": {
             "type": "display",
             "refreshRate": 1000,
-            "exec": ["internal:denon.getVolume()"]
+            "exec": [
+                "denon.getVolume()"
+            ]
         },
         "15": {
             "type": "button",
             "image": "",
             "imagePressed": "",
-            
-            "exec": ["internal:denon.decVolume(10)"]
+            "exec": [
+                "denon.decVolume(10)"
+            ]
         }
     }
 }

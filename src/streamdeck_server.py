@@ -12,6 +12,13 @@ from StreamDeck.ImageHelpers import PILHelper
 from lib.perpetualTimer import PerpetualTimer
 from lib.config import StreamDeckConfig
 from lib.imageCache import ImageCache
+from lib.denonClient import DenonClient
+from lib.foobarClient import FoobarClient
+from lib.kodiClient import KodiClient
+from lib.executionResolver import ExecutionResolver
+from lib.execution.denonExecuter import DenonExecuter
+from lib.execution.foobarExecuter import FoobarExecuter
+from lib.execution.kodiExecuter import KodiExecuter
 
 class StreamDeckServer:
 
@@ -22,6 +29,7 @@ class StreamDeckServer:
         self.timer = None
         #self.timer = PerpetualTimer(1, self.onTimerTick)
         self.imageCache = ImageCache('.cache', True)
+        self.executor = ExecutionResolver(self.config)
 
     def start(self):
         print("starting")
@@ -62,9 +70,7 @@ class StreamDeckServer:
             self.deck.set_key_image(key, image)
 
     def renderKeyImage(self, config):
-        # Resize the source image asset to best-fit the dimensions of a single key,
-        # leaving a margin at the bottom so that we can draw the key title
-        # afterwards.
+
         if (config is None) or (config.image is None) or (len(config.image)==0):
             icon = Image.new('RGB', (72, 72))
         else:
@@ -101,21 +107,7 @@ class StreamDeckServer:
 
     def resolveExecutions(self, execs):
         for execution in execs:
-            self.resolveExecution(execution)
-
-    def resolveExecution(self, execution):
-        print("try to resolve execution: "+ str(execution))
-        regex = r"^(internal|external):(.*)$"
-        match = re.match(regex, execution)
-        if (not match is None) and (len(match.groups()) == 2):
-            if match.groups()[0] == "internal":
-                self.resolveExecutionInternal(match.groups()[1])
-            else:
-                self.resolveExecutionExternal(match.groups()[1])
-
-    def resolveExecutionInternal(self, execution):
-        print("execute internal command "+ execution)
-        pass
+            self.executor.execute(execution)
 
     def resolveExecutionExternal(self, execution):
         print("execute external command "+ execution)

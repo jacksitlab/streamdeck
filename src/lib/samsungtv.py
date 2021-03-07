@@ -5,7 +5,7 @@ import time
 from threading import Thread
 import json
 
-class SamsungTV:
+class SamsungTVClient:
 
     def __init__(self, host):
         config = {
