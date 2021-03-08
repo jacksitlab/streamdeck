@@ -1,4 +1,4 @@
-from ..foobarClient import FoobarClient
+from ..client.foobarClient import FoobarClient
 from .baseExecutor import BaseExecuter
 
 class FoobarExecuter(BaseExecuter):

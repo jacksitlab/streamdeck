@@ -25,7 +25,21 @@
     "profiles": {
         "nintendoSwitch": [
             "denon.setVolume(30)",
-            "denon.setSource(GAME)"
+            "denon.setSource(GAME)",
+            "tv.setSource(HOMETHEATER)"
+        ],
+        "kodi":[
+            "denon.setVolume(30)",
+            "denon.setSource(TV)",
+            "tv.setSource(KODI)"
+        ],
+        "foobar2000":[
+            "denon.setVolume(300)",
+            "denon.setSource(CBLSAT)" 
+        ],
+        "sky":[
+            "denon.setVolume(30)",
+            "denon.setSource(DVD)" 
         ]
     },
     "items": {

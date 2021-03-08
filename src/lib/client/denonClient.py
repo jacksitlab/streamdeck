@@ -1,7 +1,7 @@
 from enum import Enum
 import math
 from .baseHttpClient import BaseHttpClient
-from .denon.status import DenonStatus
+from ..denon.status import DenonStatus
 
 
 class DenonClient(BaseHttpClient):

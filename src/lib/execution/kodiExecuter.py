@@ -1,4 +1,4 @@
-from ..kodiClient import KodiClient
+from ..client.kodiClient import KodiClient
 from .baseExecutor import BaseExecuter
 
 class KodiExecuter(BaseExecuter):

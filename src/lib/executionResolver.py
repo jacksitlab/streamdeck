@@ -5,10 +5,10 @@ from .execution.foobarExecuter import FoobarExecuter
 from .execution.kodiExecuter import KodiExecuter
 from .execution.tvExecuter import TVExecuter
 from .execution.profileExecuter import ProfileExecuter
-from .denonClient import DenonClient
-from .foobarClient import FoobarClient
-from .kodiClient import KodiClient
-from .samsungtv import SamsungTVClient
+from .client.denonClient import DenonClient
+from .client.foobarClient import FoobarClient
+from .client.kodiClient import KodiClient
+from .client.samsungtv import SamsungTVClient
 
 class ExecutionResolver:
 
