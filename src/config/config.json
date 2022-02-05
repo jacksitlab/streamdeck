@@ -24,7 +24,7 @@
     },
     "profiles": {
         "nintendoSwitch": [
-            "denon.setVolume(30)",
+            "denon.setVolume(300)",
             "denon.setSource(GAME)",
             "tv.setSource(HOMETHEATER)"
         ],
@@ -38,7 +38,7 @@
             "denon.setSource(CBLSAT)" 
         ],
         "sky":[
-            "denon.setVolume(30)",
+            "denon.setVolume(300)",
             "denon.setSource(DVD)",
             "tv.setSource(HOMETHEATER)"
         ]
