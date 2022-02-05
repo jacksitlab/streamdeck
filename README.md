@@ -7,7 +7,7 @@ sudo apt install libhidapi-hidraw0 libudev-dev libusb-1.0-0-dev python3 python3-
 ```
 Add your user to the 'plugdev' group:
 ```
-sudo usermod -a -G plugdev `whoami`
+sudo usermod -aG plugdev $USER
 
 ```
 Add the udev rules using your text editor:

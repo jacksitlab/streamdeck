@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import os
+import sys
 import time
 import re
 import cairosvg
@@ -13,12 +14,16 @@ from lib.perpetualTimer import PerpetualTimer
 from lib.config import StreamDeckConfig
 from lib.imageCache import ImageCache
 from lib.executionResolver import ExecutionResolver
+from lib.fileWatchdog import FileWatchdog
+
 
 class StreamDeckServer:
 
     def __init__(self, deck, configFilename):
         self.deck = deck
         self.config = StreamDeckConfig(configFilename)
+        self.configWatchdog = FileWatchdog(
+            configFilename, self.onConfigChanged)
         self.deck.set_key_callback(self.onKeyChanged)
         self.timer = None
         #self.timer = PerpetualTimer(1, self.onTimerTick)
@@ -39,8 +44,13 @@ class StreamDeckServer:
     def stop(self):
         print("stopping")
         self.deck.close()
+        self.configWatchdog.stop()
         if self.timer:
             self.timer.cancel()
+
+    def onConfigChanged(self):
+        print("on config changed")
+        pass
 
     def wait(self):
         while True:
@@ -60,12 +70,12 @@ class StreamDeckServer:
         # Use a scoped-with on the deck to ensure we're the only thread using it
         # right now.
         with self.deck:
-        # Update requested key with the generated image.
+            # Update requested key with the generated image.
             self.deck.set_key_image(key, image)
 
     def renderKeyImage(self, config):
 
-        if (config is None) or (config.image is None) or (len(config.image)==0):
+        if (config is None) or (config.image is None) or (len(config.image) == 0):
             icon = Image.new('RGB', (72, 72))
         else:
             print("render image "+config.image)
@@ -75,7 +85,8 @@ class StreamDeckServer:
                 print("problem loading image from cache "+config.image+":"+e)
                 icon = Image.new('RGB', (72, 72))
         margin = self.config.defaultMargin
-        image = PILHelper.create_scaled_image(self.deck, icon, margins=[margin, margin, margin, margin])
+        image = PILHelper.create_scaled_image(
+            self.deck, icon, margins=[margin, margin, margin, margin])
 
         # Load a custom TrueType font and use it to overlay the key index, draw key
         # label onto the image a few pixels from the bottom of the key.
@@ -101,11 +112,11 @@ class StreamDeckServer:
 
     def resolveExecutions(self, execs):
         for execution in execs:
-            self.executor.execute(execution)
-
-    def resolveExecutionExternal(self, execution):
-        print("execute external command "+ execution)
-        pass
+            try:
+                self.executor.execute(execution)
+            except:
+                print("WARN: problem executing "+execution+":")
+                #print(str(e))
 
 
 if __name__ == "__main__":
@@ -113,7 +124,13 @@ if __name__ == "__main__":
 
     print("Found {} Stream Deck(s).\n".format(len(streamdecks)))
 
-    server = StreamDeckServer(streamdecks[0], 'config/config.json')
+    configFilename = 'config/config.json'
+    sys.argv.pop(0)
+    if len(sys.argv) > 1:
+        if sys.argv[0]=="-c" or sys.argv[0]=="--config":
+            sys.argv.pop(0)
+            configFilename = sys.argv.pop(0)
+    server = StreamDeckServer(streamdecks[0], configFilename)
 
     server.start()
     server.wait()

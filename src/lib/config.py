@@ -18,6 +18,9 @@ class StreamDeckConfig:
         tmp = getOrDefault(o["remote"], "kodi")
         if tmp:
             self.remote["kodi"] = KodiConfig(tmp)
+        tmp = getOrDefault(o["remote"], "tv")
+        if tmp:
+            self.remote["tv"] = TVConfig(tmp)
         self.items = self.loadItems(o["items"])
         self.profiles = getOrDefault(o,"profiles",dict())
 

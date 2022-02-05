@@ -29,7 +29,7 @@
             "tv.setSource(HOMETHEATER)"
         ],
         "kodi":[
-            "denon.setVolume(30)",
+            "denon.setVolume(300)",
             "denon.setSource(TV)",
             "tv.setSource(KODI)"
         ],
@@ -39,7 +39,8 @@
         ],
         "sky":[
             "denon.setVolume(30)",
-            "denon.setSource(DVD)" 
+            "denon.setSource(DVD)",
+            "tv.setSource(HOMETHEATER)"
         ]
     },
     "items": {

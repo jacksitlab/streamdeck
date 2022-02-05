@@ -30,6 +30,7 @@ class ExecutionResolver:
 
 
     def register(self, k, executer):
+        print("register executer for key "+k+" "+ str(type(executer)))
         self.resolvers[k] = executer
 
     # run execution
@@ -69,5 +70,5 @@ class ExecutionResolver:
                 remoteConfig.username,
                 remoteConfig.password))
         elif t == "SAMSUNG_SMARTTV":
-            return TVExecutor(SamsungTV(remoteConfig.host))
+            return TVExecuter(SamsungTVClient(remoteConfig.host))
         return None
